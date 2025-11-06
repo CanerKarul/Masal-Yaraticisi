@@ -1,0 +1,5 @@
+{
+  "name": "Masal Yaratıcısı - Story Creator",
+  "description": "An interactive application for generating, illustrating, and narrating children's stories in Turkish using AI. Users can input a prompt to create a unique story with custom images and text-to-speech audio for each page.",
+  "requestFramePermissions": []
+}
