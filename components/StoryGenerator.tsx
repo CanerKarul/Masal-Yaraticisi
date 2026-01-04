@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateStoryWithAssets } from '../services/geminiService';
+import { generateStoryStructure } from '../services/geminiService';
 import { type Story } from '../types';
 
 interface StoryGeneratorProps {
@@ -27,7 +27,8 @@ const StoryGenerator: React.FC<StoryGeneratorProps> = ({
     }
     onGenerationStart();
     try {
-      const story = await generateStoryWithAssets(prompt, childName, pageCount);
+      // Step 1: Generate only the Text Structure (Fast)
+      const story = await generateStoryStructure(prompt, childName, pageCount);
       onStoryGenerated(story);
     } catch (error) {
       if (error instanceof Error) {
@@ -50,7 +51,7 @@ const StoryGenerator: React.FC<StoryGeneratorProps> = ({
             id="prompt"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Örn: Uçan bir fil ve arkadaşı tavşan"
+            placeholder="Örn: Uzayda kaybolan kedi yavrusu"
             className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg focus:ring-4 focus:ring-yellow-300 focus:border-yellow-500 transition text-gray-800 bg-white"
             disabled={isLoading}
           />
@@ -66,7 +67,7 @@ const StoryGenerator: React.FC<StoryGeneratorProps> = ({
                     id="childName"
                     value={childName}
                     onChange={(e) => setChildName(e.target.value)}
-                    placeholder="Örn: Ada"
+                    placeholder="Örn: Can"
                     className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg text-lg focus:ring-4 focus:ring-yellow-300 focus:border-yellow-500 transition text-gray-800 bg-white"
                     disabled={isLoading}
                 />
@@ -79,7 +80,7 @@ const StoryGenerator: React.FC<StoryGeneratorProps> = ({
                 type="range"
                 id="pageCount"
                 min="3"
-                max="10"
+                max="8" // Reduced max slightly to ensure high quality completion
                 value={pageCount}
                 onChange={(e) => setPageCount(Number(e.target.value))}
                 className="w-full h-3 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-yellow-500"
@@ -93,7 +94,7 @@ const StoryGenerator: React.FC<StoryGeneratorProps> = ({
           disabled={isLoading}
           className="w-full py-4 px-6 bg-red-500 text-white text-2xl font-extrabold rounded-xl shadow-md hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transform hover:scale-105 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none"
         >
-          {isLoading ? 'Oluşturuluyor...' : 'Masalı Yarat!'}
+          {isLoading ? 'Yazılıyor...' : 'Masalı Başlat!'}
         </button>
       </form>
     </div>
